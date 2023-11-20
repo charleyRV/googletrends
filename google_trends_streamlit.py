@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import time
 
+@st.cache_data(ttl=14400,max_entries=1)
 def getGoogleTrends(keywords):
     url = 'https://serpapi.com/search.json?'
   
@@ -23,16 +24,14 @@ def getGoogleTrends(keywords):
         if 'related_queries' in json:
             for query_type in ['rising', 'top']:
                 if query_type in json['related_queries']:
-                    queries = [(item.get('query', 'N/A'), item.get('extracted_value', 'N/A')) for item in json['related_queries'][query_type][:5]]
-                    with st.expander(f"Top 5 {query_type} queries for {keyword}"):
+                    queries = [(item.get('query', 'N/A'), item.get('extracted_value', 'N/A')) for item in json['related_queries'][query_type][:10]]
+                    with st.expander(f"Top 10 {query_type} queries for {keyword}"):
                          st.markdown('\n'.join(f'- [{query}](https://trends.google.com/trends/explore?date=now%204-H&geo=US&q={query.replace(" ", "%20")}&hl=en) - Value: {value}' for query, value in queries))
 
 
 keywords = [
     "Best Black Friday Deals",
     "Black Friday Deals",
-    "Black Friday Ads",
-    "Walmart Black Friday Ads",
     "Black Friday Apple Watch Deals",
     "Best Black Friday Apple Watch Deals",
     "Black Friday TV Deals",
@@ -53,15 +52,38 @@ keywords = [
     "Black Friday Walmart Deals",
     "Amazon Black Friday Deals",
     "Best Amazon Black Friday Deals",
-    "Best Black Friday Deals Under $100",
-    "Best Black Friday Deals Under $25",
-    "Best Black Friday Deals Under $50",
     "Black Friday Deals Under $100",
     "Black Friday Deals Under $25",
     "Black Friday Deals Under $50",
     "Black friday tech deals",
-    "Best Black friday tech deals"
+    "Best Black friday tech deals",
+    "Target Black Friday Ads",
+    "Black Friday iPhone Deals",
+    "Black Friday iPad Deals",
+    "Best Black Friday iPad Deals",
+    "Black Friday Nintendo Switch Deals",
+    "Best Black Friday Nintendo Switch Deals",
+    "Black Friday Robot Vacuum Deals",
+    "Best Black Friday Robot Vacuum Deals",
+    "Black Friday Air Fryer Deals",
+    "Best Black Friday Air Fryer Deals",
+    "Black Friday Airpods Deals",
+    "Best Black Friday Airpods Deals",
+    "Best Black Friday Ps5 Deals",
+    "Black Friday Ps5 Deals",
+    "Black Friday Headphone Deals",
+    "Best Black Friday Headphone Deals",
+    "Black Friday Roku Deals",
+    "Best Black Friday Roku Deals",
+    "Xbox Black Friday Deals",
+    "Playstation Black Friday Deals",
+    "Ring Black Friday Deals",
+    "Best Xbox Black Friday Deals",
+    "Best Playstation Black Friday Deals",
+    "Best Ring Black Friday Deals",
+    "Best Buy Black Friday Deals"
 ]
+
 st.title('Google Trending Topics')
 st.write("""This app shows the top Google trending queries for a predetermined set of keywords""")
 
